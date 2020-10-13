@@ -30,6 +30,8 @@ if [ "$check" = "y" ] || [ "$check" = "" ] || [ "$check" = "yes" ]; then
     if [ "$check" = "y" ] || [ "$check" = "" ] || [ "$check" = "yes" ]; then
         cp .dircolors ~/;
     fi
+
+    source ~/.bashrc
 fi
 
 
