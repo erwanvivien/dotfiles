@@ -1,35 +1,50 @@
-#!/bin/bash
+#!/bin/sh
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 red() {
-    if [[ -z $1 ]]; then
+    if [ -z $1 ]; then
         return;
     fi
     echo -e "\n\n${RED}$1:$NC"
 }
 
 inst() {
-    if [[ -z $1 ]]; then
+    if [ -z $1 ]; then
         return;
     fi
     red $1
     sudo apt install -y $1
 }
 
-read -p 'login epita: ' LOGIN
+read -p "Copy VIMRC ?     [Enter/y/n/yes/no]: " check
+if [ "$check" = "y" ] || [ "$check" = "" ] || [ "$check" = "yes" ]; then
+    cp .vimrc ~/;
+fi
 
+read -p "Copy BASHRC ?    [Enter/y/n/yes/no]: " check
+if [ "$check" = "y" ] || [ "$check" = "" ] || [ "$check" = "yes" ]; then
+    cp .bashrc ~/;
+
+    read -p "Copy DIRCOLORS ? [Enter/y/n/yes/no]: " check
+    if [ "$check" = "y" ] || [ "$check" = "" ] || [ "$check" = "yes" ]; then
+        cp .dircolors ~/;
+    fi
+fi
+
+
+
+read -p 'login epita: ' LOGIN
 source ~/.bashrc
 
-red "Update du apt-get"
-sudo apt-get update -y
-red "Upgrade du apt-get"
-sudo apt-get upgrade -y
+red "Update du apt-get && upgrade"
+sudo apt-get update -y && sudo apt-get upgrade -y
 
 inst git
+
 red "update git config --global user.email"
 git config --global user.email "$LOGIN@epita.fr"
-red "update git config --global user.name"
+red "update git config --global \"$LOGIN\""
 git config --global user.name "$LOGIN"
 
 inst vim
@@ -52,5 +67,5 @@ else
 fi
 
 echo -e '\n\n'
-red "Your SSH-key is in the clipboard, paste it at cri.epita.fr/users/$LOGIN/ssh-keys"
+red "Your SSH-key is in the clipboard, \npaste it at cri.epita.fr/users/$LOGIN/ssh-keys"
 cat .ssh/id_rsa.pub | clip.exe
