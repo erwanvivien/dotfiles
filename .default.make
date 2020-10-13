@@ -10,7 +10,7 @@ TEST_LDFLAGS = -Wl,-rpath,.
 
 SOURCES=${wildcard *.c}
 OBJECTS=${SOURCES:.c=.o}
-HELPERS=${wildcard *.o}
+HELPERS=${wildcard *.h}
 TEST_OBJECTS = tests/test.o
 
 LIB = libdlist.a libstudent.so

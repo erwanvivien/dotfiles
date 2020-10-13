@@ -42,190 +42,20 @@ notepad() {
 export -f notepad
 
 saveBash() {
-    cp  ~/.vimrc /mnt/d/unix_cpy/
-    cp  ~/.bashrc /mnt/d/unix_cpy/
-    cp  ~/.dircolors /mnt/d/unix_cpy/
-    cp  ~/.setup /mnt/d/unix_cpy/
-    cp  ~/.default.* /mnt/d/unix_cpy/
+    SAVE_DIR="/mnt/d/setup-unix/"
+    cp  ~/.vimrc "$SAVE_DIR"
+    cp  ~/.bashrc "$SAVE_DIR"
+    cp  ~/.dircolors "$SAVE_DIR"
+    cp  ~/.setup "$SAVE_DIR"
+    cp  ~/.default.* "$SAVE_DIR"
 }
 
 mBash() {
-    vim ~/.bashrc    
+    vim ~/.bashrc
     .   ~/.bashrc
     saveBash
 }
 export -f mBash
-
-# START GOTO ====================
-
-GO() {
-    tmp=""
-    if [[ -z $1 ]]; then
-        tmp=$(ls -va1 --color=none | tail -1)
-#        tmp=${tmp:2:2}
-    else
-        tmp=$1
-        if [[ ${#tmp} -eq 1 ]]; then
-            tmp=tp0$tmp-$ID_EPITA
-        else
-            tmp=tp$tmp-$ID_EPITA
-        fi
-    fi  
-    cd $tmp
-}
-
-GO_TP() {
-    if [[ "$#" -eq 0 ]]; then
-        GO; GO
-        cd p*
-    elif [[ "$#" -eq 1 ]]; then
-        fl=$(echo $1 | head -c 1)
-        if [[ $fl == "s" ]]; then
-            [[ ! -d $1 ]] && mkdir $1 ||cd $1
-        else 
-            GO
-            GO $1
-            cd p*
-        fi
-    elif [[ "$#" -eq 2 ]]; then
-        fl=$(echo $1 | head -c 1)
-        if [[ $fl == "s" ]]; then
-            cd $1
-            GO $2
-        else 
-            cd $2
-            GO $1
-        fi
-        cd p*
-    else
-        echo bad usage.
-    fi
-}
-
-c() {
-    cd /mnt/d/dev/c/tps/
-    GO_TP $@
-}
-export -f c 
-
-createC() {
-
-    for arg in $*; do
-        if ! [[ -f $arg ]]; then
-            cp ~/.default.c ./$arg;
-        fi
-    done
-
-    if ! [[ -f "./Makefile" ]]; then
-        cp ~/.default.make ./Makefile;
-    fi
-
-    vim $1
-}
-export -f createC
-
-
-r() {
-    cd /mnt/d/dev/rust/tps/
-    GO_TP $@
-}
-export -f r
-
-# END GOTO ======================
-
-CLONE()
-{
-    tp=""
-    if [[ -z $1 ]]; then
-        tp=$(ls -va1 --color=none | tail -1)
-        echo $tp 1
-        tp=${tp:2:2}
-        echo $tp 1
-
-        if [[ ${tp::1} == "0" ]]; then
-            tp=tp0$(( ${tp:1:1} + 1 ))-$ID_EPITA
-        else
-            tp=tp$(( $tp + 1 ))-$ID_EPITA
-        fi
-        echo $tp 1
-    else
-        tp=$1
-        if [[ ${#tp} -eq 1 ]]; then
-            tp=tp0$tp-$ID_EPITA
-        else
-            tp=tp$tp-$ID_EPITA
-        fi
-        echo $tp 2
-    fi  
-    git clone git@git.cri.epita.net:p/2023-$( basename "$PWD" )-tp/$tp
-    cd $tp
-    mkdir pw
-    echo -e "Erwan\nVivien\nerwan.vivien\nerwan.vivien@epita.fr" >> pw/AUTHORS
-    # End
-    echo "Rename pw directory"
-}
-
-CLONE_TP()
-{
-    if [[ "$#" -eq 0 ]]; then
-        GO; 
-        CLONE
-    elif [[ "$#" -eq 1 ]]; then
-        fl=$(echo $1 | head -c 1)
-        if [[ $fl == "s" ]]; then
-            [[ ! -d $1 ]] && mkdir $1 ||cd $1
-        else 
-            cd $1
-            CLONE
-        fi
-    elif [[ "$#" -eq 2 ]]; then
-        fl=$(echo $1 | head -c 1)
-        if [[ $fl == "s" ]]; then
-            cd $1
-            CLONE $2
-        else 
-            cd $2
-            CLONE $1
-        fi
-        cd p*
-    else
-        echo bad usage.
-    fi
-}
-
-cclone()
-{
-    cd /mnt/d/dev/c/tps/
-    CLONE_TP $@
-}
-
-rclone()
-{
-    cd /mnt/d/dev/rust/tps/
-    CLONE_TP $@
-}
- 
-
-rclean()
-{
-    for arg in $(ls -d */)
-    do
-        cd $arg
-        cargo clean
-        echo cleaned $arg
-        cd ..
-    done
-}
-
-
-
-
-
-
-
-
-
-
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
