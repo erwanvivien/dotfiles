@@ -59,8 +59,7 @@ if &ft == 'make'
 endif
 inoremap {<Enter> {<Enter><Enter>}<Esc>kcc
 
-nnoremap == gg=G<C-o><C-o>
-"nnoremap == :silent !clang-format -i %
+nnoremap == M:%!clang-format<cr><C-O>
 
 " When Losing focus and comming back, refreash file
 set autoread

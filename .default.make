@@ -3,7 +3,8 @@ CFLAGS = -Wall -Werror -Wextra \
 	-std=c99 -pedantic -Wstrict-prototypes
 CFLAGS_MEM = -fsanitize=address
 CFLAGS_DEBUG = -g -DDEBUG=1
-LDFLAGS= -lasan
+
+CPPFLAGS = -Iinclude
 
 TEST_LDLIBS = -lcriterion -L. -lstudent
 TEST_LDFLAGS = -Wl,-rpath,.
@@ -13,49 +14,55 @@ OBJECTS=${SOURCES:.c=.o}
 HELPERS=${wildcard *.h}
 TEST_OBJECTS = tests/test.o
 
-LIB = libdlist.a libstudent.so
+LIB = libstream.a libstudent.so
 TARGET = a.out
 
-library: ${LIB}
-
+# All makes library and executable
+all: library
 all: CFLAGS += ${CFLAGS_MEM}
-all: ${OBJECTS} ${LIB}
+all: build
 
-test: debug
+# Libraby makes only the libraries
+library: CFLAGS += -fPIC
+library: ${OBJECTS} ${LIB}
+#
+# Compiles with the debug flags
+debug: CFLAGS += ${CFLAGS_DEBUG} ${CFLAGS_MEM}
+debug: build
 
-debug: CFLAGS += ${CFLAGS_DEBUG}
-debug: ${TARGET} build
-
-format:
-	clang-format -i ${SOURCES} ${HELPERS}
-
-build:
-	${CC} -o ${TARGET} ${OBJECTS} ${CFLAGS} ${LDFLAGS}
-
-${TARGET}: ${OBJECTS}
-	${CC} -o $@ $^ ${LDFLAGS}
-
-%.o: %.c %.h
-	${CC} ${CFLAGS} -c $<
-
-%.o: %.c
-	${CC} ${CFLAGS} -c $<
-
+# Clean the repo
 clean:
 	rm -f *.o ${TARGET} ${LIB} ${TEST_OBJECTS} testsuite
 
+# Is use to make a criterion program
 check: CFLAGS += -fPIC
 check: testsuite
 	./testsuite --verbose
 
+# The criterion executable
 testsuite: ${LIB}
 testsuite: ${TEST_OBJS}
 	${LINK.o} $^ ${TEST_LDFLAGS} -o $@ ${TEST_LDLIBS}
 
-%.so:
+# Formats all sources and helpers
+format:
+	clang-format -i ${SOURCES} ${HELPERS}
+
+# Build an exe
+build: ${OBJECTS}
+	${CC} -o ${TARGET} $^ ${CFLAGS} ${LDFLAGS}
+
+# ALL EXTENSION RULES
+# %.o: %.c %.h
+# 	${CC} ${CFLAGS} -c $<
+# 
+# %.o: %.c
+# 	${CC} ${CFLAGS} -c $<
+
+%.so: ${OBJECTS}
 	${CC} -shared ${LDFLAGS} -o $@ $^ ${LD_LIBS}
 
 %.a: ${OBJECTS}
 	ar crs $@ $^
 
-.PHONY = clean all test library debug check
+.PHONY = clean all library debug check
