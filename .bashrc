@@ -53,18 +53,24 @@ saveBash() {
     cp  ~/.gitconfig "$SAVE_DIR"
 }
 
+push_dotfiles()
+{
+    dir="/mnt/d/setup-unix"
+    for file in "$dir/"* "$dir/."*; do
+        if [ "$file" = "." ] || [ "$file" = ".." ] || [ "$file" = ".git" ]; then
+            continue;
+        fi
+        git -C "$dir" add "$file"
+    done
+    git -C "$dir" commit -m "update dotfiles"
+    git -C "$dir" push
+}
+
 mBash() {
     vim ~/.bashrc
     source   ~/.bashrc
     saveBash
-    read -t 3 -p "Push on git ? [Y/n]: " line
-
-    if [ "$line" = "Y" ]; then
-        dir="/mnt/d/setup-unix"
-        git -C "$dir" add $dir/*
-        git -C "$dir" commit -m "update dotfiles"
-        git -C "$dir" push
-    fi
+    echo 'use `push_dotfiles` to push on git the dotfiles'
 }
 export -f mBash
 
