@@ -58,14 +58,10 @@ mBash() {
     source   ~/.bashrc
     saveBash
     read -t 3 -p "Push on git ? [Y/n]: " line
+
     if [ "$line" = "Y" ]; then
         dir="/mnt/d/setup-unix"
-        for file in $file/* $file.*; do
-            if [ "$file" = "." ] || [ "$file" = ".." ]; then
-                continue
-            fi
-            git -C "$dir" add "$dir/$file"
-        done
+        git -C "$dir" add $dir/*
         git -C "$dir" commit -m "update dotfiles"
         git -C "$dir" push
     fi
