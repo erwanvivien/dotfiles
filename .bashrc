@@ -57,7 +57,9 @@ push_dotfiles()
 {
     dir="/mnt/d/setup-unix"
     for file in "$dir/"* "$dir/."*; do
-        if [ "$file" = "." ] || [ "$file" = ".." ] || [ "$file" = ".git" ]; then
+        if [ "$file" = "$dir/." ] ||
+                [ "$file" = "$dir/.." ] ||
+                [ "$file" = "$dir/.git" ]; then
             continue;
         fi
         git -C "$dir" add "$file"
