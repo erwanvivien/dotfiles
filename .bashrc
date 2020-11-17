@@ -10,6 +10,8 @@ esac
 
 ID_EPITA='erwan.vivien'
 
+EDITOR=/bin/vim
+
 # This updates colors in function of ~/.dircolors
 eval "`dircolors -b ~/.dircolors`"
 
@@ -19,10 +21,11 @@ alias git_url='git config --get remote.origin.url'
 alias python='python3'
 alias py='python3'
 # alias gcc='gcc -Wextra -Werror -Wall -std=c99 -pedantic -Wstrict-prototypes'
-alias gdb='gdb -q'
+alias gdb='gdb -q -tui -eval-command=start'
 
 alias ..="source ~/.bashrc"
 alias cl="clang-format"
+alias bot_discord='py /mnt/d/dev/python/discord_test.py'
 
 # USEFUL FUNCTIONS ==============
 
@@ -43,11 +46,11 @@ export -f notepad
 
 saveBash() {
     SAVE_DIR="/mnt/d/setup-unix/"
-        cp  ~/.vimrc "$SAVE_DIR"
-        cp  ~/.bashrc "$SAVE_DIR"
-        cp  ~/.dircolors "$SAVE_DIR"
-        cp  ~/.setup "$SAVE_DIR"
-        cp  ~/.default.* "$SAVE_DIR"
+    cp  ~/.vimrc "$SAVE_DIR"
+    cp  ~/.bashrc "$SAVE_DIR"
+    cp  ~/.dircolors "$SAVE_DIR"
+    cp  ~/.setup "$SAVE_DIR"
+    cp  ~/.default.* "$SAVE_DIR"
 }
 
 mBash() {

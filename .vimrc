@@ -1,3 +1,4 @@
+filetype plugin on
 scriptencoding utf-8
 set encoding=utf-8
 
@@ -22,9 +23,21 @@ set so=10
 " End line (80 chars)
 set cc=80
 
-" Set the syntax for comments
+" Set the syntax
 syntax on
-:highlight Comment ctermfg=80a0ff
+
+" Gives the name of the property to be changed
+" :execute "verbose highlight ".synIDattr(synID(line("."),col("."),1),"name")
+"
+" Set the syntax for comments
+highlight Comment ctermfg=80
+
+" Set the syntax for lines
+set cursorline
+highlight LineNr cterm=bold ctermfg=0aaaaaa
+highlight CursorLine NONE
+highlight CursorLineNr ctermfg=214
+" highlight clear LineNrBelow
 
 " Improve search functionnality
 "set hlsearch
@@ -44,25 +57,51 @@ set cindent
 
 " Typed shortcuts
 
+nnoremap == Mgg=G<c-o><c-o>
+
 " File 'c' and 'cpp'
-filetype plugin on
-if &ft == 'c' ||
-   \ &ft ==# 'cpp'
-    inoremap ul<space> unsigned long<space>
-    inoremap ui<space> unsigned int<space>
-"     inoremap flength(<space> size_t length(char *s)<Enter>{<Enter>size_t len
-"             \ = 0;<Enter>for(len = 0; s[len] != 0; len++)<Enter>continue;<Enter>
-"             \ return len;
-endif
-if &ft == 'make'
-    set noexpandtab
-endif
+" set modeline
+" set modelines=1
+
+function s:LoadTagsFile()
+    if &ft == 'c' || &ft == 'cpp'
+        inoremap ul<space> unsigned long<space>
+        inoremap ui<space> unsigned int<space>
+
+        nnoremap == M:%!clang-format<cr><C-O>
+
+        " Highlight Class and Function names
+"        syn match    cCustomParen    "?=(" contains=cParen,cCppParen
+"        syn match    cCustomFunc     "\w\+\s*(\@=" contains=cCustomParen
+"        syn match    cCustomScope    "::"
+"        syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+"
+"        hi def link cCustomFunc  Function
+"        hi def link cCustomClass Function
+"
+"        " Set the syntax for preprocessor instructions
+
+        highlight def link Format Special
+    elseif &ft=='make'
+        set noexpandtab
+    elseif &ft=='vim'
+        highlight def link vimString Constant
+    endif
+endfunction
+
+highlight Constant ctermfg=156
+highlight PreProc ctermfg=9
+highlight Special ctermfg=6
+highlight Statement ctermfg=172
+highlight Type ctermfg=40
+highlight Function ctermfg=63
+
 inoremap {<Enter> {<Enter><Enter>}<Esc>kcc
 
-nnoremap == M:%!clang-format<cr><C-O>
-
 " When Losing focus and comming back, refreash file
-set autoread
+" set autoread
 
-au FocusLost,WinLeave * :silent! noautocmd w
-au FocusGained,BufEnter * :silent! !
+" au FocusLost,WinLeave * :silent! noautocmd w
+" au FocusGained,BufEnter * :silent! !
+
+autocmd BufReadPost,BufWritePost * call s:LoadTagsFile()

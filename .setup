@@ -28,9 +28,15 @@ sudo apt-get upgrade -y
 
 inst git
 red "update git config --global user.email"
-git config --global user.email "$LOGIN@epita.fr"
 red "update git config --global user.name"
+git config --global user.email "$LOGIN@epita.fr"
 git config --global user.name "$LOGIN"
+
+inst gitk
+git config --global alias.st status
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.visual '!gitk'
+git config --global alias.ls 'ls-files'
 
 inst vim
 inst cmake
@@ -53,4 +59,4 @@ fi
 
 echo -e '\n\n'
 red "Your SSH-key is in the clipboard, paste it at cri.epita.fr/users/$LOGIN/ssh-keys"
-cat .ssh/id_rsa.pub | clip.exe
+cat "$HOME/.ssh/id_rsa.pub" | clip.exe
