@@ -1,0 +1,9 @@
+[user]
+	email = erwan.vivien@epita.fr
+	name = erwan.vivien
+[alias]
+	st = status
+	last = log -1 HEAD
+	visual = !gitk
+	ls = ls-files
+	tags = ls-remote --tags

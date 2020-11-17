@@ -57,12 +57,17 @@ mBash() {
     vim ~/.bashrc
     source   ~/.bashrc
     saveBash
-    read -n1 -t 3 -p "Push on git ? [Y/n]: " line
+    read -t 3 -p "Push on git ? [Y/n]: " line
     if [ "$line" = "Y" ]; then
         dir="/mnt/d/setup-unix"
-        git -C "$dir" add -u
-        git -C "$dir" commit -m "update dotfiles"
-        git -C "$dir" push
+        for file in * .*; do
+            if [ "$file" = "." ] || [ "$file" = ".." ]; then
+                continue
+            fi
+            git -C "$dir" add "$file"
+        done
+# git -C "$dir" commit -m "update dotfiles"
+# git -C "$dir" push
     fi
 }
 export -f mBash
