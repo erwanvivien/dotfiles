@@ -2,6 +2,8 @@ filetype plugin on
 scriptencoding utf-8
 set encoding=utf-8
 
+" Plugin 'Vimjas/vim-python-pep8-indent'
+
 " Enable cursor everywhere
 set ve=all
 
@@ -86,6 +88,8 @@ function s:LoadTagsFile()
         set noexpandtab
     elseif &ft=='vim'
         highlight def link vimString Constant
+    elseif &ft=='python'
+        nnoremap == M:%!clang-format<cr><C-O>
     endif
 endfunction
 

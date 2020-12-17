@@ -6,4 +6,6 @@
 	last = log -1 HEAD
 	visual = !gitk
 	ls = ls-files
+	ls-all = ls-files -s
 	tags = ls-remote --tags
+    graph = log --graph --decorate --pretty=oneline --abbrev-commit master origin/master

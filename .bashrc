@@ -25,6 +25,8 @@ alias gdb='gdb -q -tui -eval-command=start'
 alias ..="source ~/.bashrc"
 alias cl="clang-format"
 alias bot_discord="py /mnt/d/dev/python/discord_test.py"
+alias ec2='ssh -i "~/.ssh/CleSecuErwan.pem" ubuntu@15.237.134.217'
+alias scp-ec2='scp -i "~/.ssh/CleSecuErwan.pem"'
 
 # USEFUL FUNCTIONS ==============
 
@@ -39,7 +41,7 @@ gccf()
 export -f gccf
 
 notepad() {
-    "$PRGM_FILES_x86/Notepad++/notepad++.exe" $@ & disown
+    "$PRGM_FILES_x86/Notepad++/notepad++.exe" "$*" & disown
 }
 export -f notepad
 
@@ -51,6 +53,7 @@ saveBash() {
     cp  ~/.setup "$SAVE_DIR"
     cp  ~/.default.* "$SAVE_DIR"
     cp  ~/.gitconfig "$SAVE_DIR"
+    cp "/mnt/c/Users/Erwan/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" "$SAVE_DIR"
 }
 
 push_dotfiles()
@@ -141,7 +144,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\e[94m\W \e[92m\$ \e[0m'
+    PS1='\e[94m\W \e[92m\$ \e[0m'
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
