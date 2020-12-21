@@ -49,6 +49,11 @@ inst make
 inst cargo
 inst valgrind
 inst npm
+inst python
+inst python3-pip
+inst python3-venv
+
+python
 
 red "SSH-keygen"
 if [[ -d "~/.ssh/" ]]; then

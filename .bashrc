@@ -9,8 +9,8 @@ case $- in
 esac
 
 ID_EPITA='erwan.vivien'
-DEV="/mnt/d/dev"
-EDITOR=/bin/vim
+DEV="/mnt/c/Users/Erwan/CloudStation/Dev"
+EDITOR="/bin/vim"
 PRGM_FILES_x86='/mnt/c/Program files (x86)'
 
 # This updates colors in function of ~/.dircolors
@@ -20,11 +20,12 @@ alias dev="cd $DEV"
 alias explorer='explorer.exe'
 alias git_url='git config --get remote.origin.url'
 alias python='python3'
+alias pip='pip3'
 alias py='python3'
 alias gdb='gdb -q -tui -eval-command=start'
 alias ..="source ~/.bashrc"
 alias cl="clang-format"
-alias bot_discord="py /mnt/d/dev/python/discord_test.py"
+alias bot_discord="py ""$DEV""/python/discord_test.py"
 alias ec2='ssh -i "~/.ssh/CleSecuErwan.pem" ubuntu@15.237.134.217'
 alias scp-ec2='scp -i "~/.ssh/CleSecuErwan.pem"'
 
@@ -46,27 +47,31 @@ notepad() {
 export -f notepad
 
 saveBash() {
-    SAVE_DIR="/mnt/d/setup-unix/"
+    SAVE_DIR="$DEV/setup-unix"
     cp  ~/.vimrc "$SAVE_DIR"
     cp  ~/.bashrc "$SAVE_DIR"
     cp  ~/.dircolors "$SAVE_DIR"
     cp  ~/.setup "$SAVE_DIR"
     cp  ~/.default.* "$SAVE_DIR"
     cp  ~/.gitconfig "$SAVE_DIR"
+
     cp "/mnt/c/Users/Erwan/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" "$SAVE_DIR"
 }
 
 push_dotfiles()
 {
-    dir="/mnt/d/setup-unix"
+    dir="$DEV/setup-unix"
+
     for file in "$dir/"* "$dir/."*; do
         if [ "$file" = "$dir/." ] ||
-                [ "$file" = "$dir/.." ] ||
-                [ "$file" = "$dir/.git" ]; then
+            [ "$file" = "$dir/.." ] ||
+            [ "$file" = "$dir/.git" ]; then
             continue;
         fi
+
         git -C "$dir" add "$file"
     done
+
     git -C "$dir" commit -m "update dotfiles"
     git -C "$dir" push
 }
