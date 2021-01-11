@@ -40,7 +40,7 @@
             "fontFace" : "Cascadia Code PL",
 
   	    // set to "false" if you prefer to disable acrylic (tranparency)
-            "useAcrylic" : true,
+            "useAcrylic" : false,
         },
         "list":
         [

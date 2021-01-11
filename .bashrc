@@ -48,12 +48,13 @@ export -f notepad
 
 saveBash() {
     SAVE_DIR="$DEV/setup-unix"
-    cp  ~/.vimrc "$SAVE_DIR"
-    cp  ~/.bashrc "$SAVE_DIR"
-    cp  ~/.dircolors "$SAVE_DIR"
-    cp  ~/.setup "$SAVE_DIR"
-    cp  ~/.default.* "$SAVE_DIR"
-    cp  ~/.gitconfig "$SAVE_DIR"
+    cp ~/.vimrc "$SAVE_DIR"
+    cp ~/.bashrc "$SAVE_DIR"
+    cp ~/.dircolors "$SAVE_DIR"
+    cp ~/.setup "$SAVE_DIR"
+    cp ~/.default.* "$SAVE_DIR"
+    cp ~/.gitconfig "$SAVE_DIR"
+    cp ~/.ssh "$SAVE_DIR" -r
 
     cp "/mnt/c/Users/Erwan/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" "$SAVE_DIR"
 }
@@ -216,3 +217,5 @@ fi
 #if [ "$TERM" != "linux" ] && [ -f "$GOPATH/bin/powerline-go" ]; then
 #    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 #fi
+export PGDATA="$HOME/postgres_data"
+export PGHOST="/tmp"
